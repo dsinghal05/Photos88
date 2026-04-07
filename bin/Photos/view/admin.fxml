@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox spacing="15" alignment="CENTER" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="Photos.view.AdminController">
+<VBox alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="600.0" spacing="15" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/25" fx:controller="Photos.view.AdminController">
 
     <!-- Title -->
-    <Label text="Admin Panel" style="-fx-font-size: 20px;" />
+    <Label style="-fx-font-size: 20px;" text="Admin Panel" />
 
     <!-- Create User Section -->
-    <HBox spacing="10" alignment="CENTER">
+    <HBox alignment="CENTER" spacing="10">
         <TextField fx:id="usernameField" promptText="Enter username" />
-        <Button text="Create New User" onAction="#handleAddUser"/>
+        <Button onAction="#handleAddUser" text="Create New User" />
     </HBox>
 
     <!-- User List -->
     <ListView fx:id="userListView" prefHeight="200" prefWidth="250" />
+   <Button fx:id="LogOutButton" minWidth="75.0" mnemonicParsing="false" onAction="#returnToLogin" text="Log Out" translateX="250.0" translateY="75.0" />
 
 </VBox>
