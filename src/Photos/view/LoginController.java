@@ -1,5 +1,6 @@
 package Photos.view;
 
+
 import javafx.scene.control.TextField;
 import javafx.fxml.FXML;
 public class LoginController {

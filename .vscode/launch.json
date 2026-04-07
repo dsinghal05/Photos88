@@ -10,7 +10,7 @@
             "name": "Launch app",
             "request": "launch",
             "mainClass": "Photos.app.PhotosApp",
-            "vmArgs": "--module-path \"lib\" --add-modules javafx.controls,javafx.fxml"
+            "vmArgs": "--module-path C:\\Users\\divit\\Documents\\javafx-sdk-21.0.10\\lib --add-modules javafx.controls,javafx.fxml"
         }
     ]
 }
