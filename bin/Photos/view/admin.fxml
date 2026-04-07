@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" alignment="CENTER" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Photos.view.AdminController">
+
+    <!-- Title -->
+    <Label text="Admin Panel" style="-fx-font-size: 20px;" />
+
+    <!-- Create User Section -->
+    <HBox spacing="10" alignment="CENTER">
+        <TextField fx:id="usernameField" promptText="Enter username" />
+        <Button text="Create New User" onAction="#handleAddUser"/>
+    </HBox>
+
+    <!-- User List -->
+    <ListView fx:id="userListView" prefHeight="200" prefWidth="250" />
+
+</VBox>
