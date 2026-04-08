@@ -1,11 +1,15 @@
 package Photos.view;
 
+import java.io.IOException;
+
 import Photos.model.User;
 import Photos.model.UserList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.ListCell;
@@ -14,6 +18,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+/**
+ * Admin is a special sub-system that can list, add, and remove users. It does not support photo functionality. Admin can not be deleted from the user list.
+ */
 public class AdminController {
     @FXML private TextField usernameField;
     @FXML private ListView<User> userListView;
@@ -21,8 +28,13 @@ public class AdminController {
 
     private UserList userList;
 
+    /**
+     * Lets AdminController recieve userList to be able to list users, as well as call to add/remove users.
+     * @param list
+     */
     public void setUserList(UserList list) {
         this.userList = list;
+        refreshList();
     }
 
 
@@ -33,53 +45,65 @@ public class AdminController {
                 @Override
                 protected void updateItem(User user, boolean empty) {
                     super.updateItem(user, empty);
-                    setText(empty || user == null ? null : user.getUsername());
+
+                    if (empty || user == null) {
+                        setText(null);
+                        setContextMenu(null); // ❌ remove menu for empty cells
+                    } else {
+                        setText(user.getUsername());
+
+                        // ✅ Create context menu ONLY for valid users
+                        MenuItem deleteItem = new MenuItem("Delete User");
+                        deleteItem.setOnAction(e -> {
+                            try {
+                                userList.removeUser(user);
+                                refreshList();
+                            } catch (IOException | IllegalArgumentException ex) {
+                                Alert alert = new Alert(AlertType.ERROR);
+                                alert.setTitle("Admin Error");
+                                alert.setHeaderText("Failed to remove User");
+                                alert.setContentText(ex.getLocalizedMessage());
+                                alert.showAndWait();
+                            }
+                        });
+
+                        ContextMenu menu = new ContextMenu(deleteItem);
+                        setContextMenu(menu); // ✅ attach only here
+                    }
                 }
             };
 
-            // Context menu (right-click)
-            MenuItem deleteItem = new MenuItem("Delete User");
-            deleteItem.setOnAction(e -> {
-                User selected = cell.getItem();
-                if (selected != null && !selected.getUsername().equals("admin")) {
-                    userList.removeUser(selected.getUsername());
-                    refreshList();
-                    try {
-                        UserList.write(userList);  
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            });
-
-            ContextMenu menu = new ContextMenu(deleteItem);
-            cell.setContextMenu(menu);
-
             return cell;
-        });
+        });    
     }
+
+    /**
+     * Updates the cell view after changes have been made to the user list.
+     */
     private void refreshList() {
-        userListView.getItems().setAll(userList.getUsers());
+        if (userList != null) {
+            userListView.getItems().setAll(userList.getUsers());
+        }
     }
 
     @FXML
-    public void handleAddUser() {
-        String username = usernameField.getText();
-
-        if (username == null || username.isEmpty()) {
-            //return error code
-            return;
-        }
-
-        userList.addUser(username);
-        usernameField.clear();
-        refreshList();
+    public void handleAddUser() throws IOException {
+        String username = usernameField.getText().strip();
 
         try {
-            UserList.write(userList);  
-        } catch (Exception e) {
-            e.printStackTrace();
+            userList.addUser(username);
         }
+        catch (IllegalArgumentException e) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Admin Error");
+            alert.setHeaderText("Could not add User");
+            alert.setContentText(e.getLocalizedMessage());
+
+            alert.showAndWait();
+            return;
+        }
+        usernameField.clear();
+        refreshList();
     }
 
     @FXML
@@ -96,7 +120,7 @@ public class AdminController {
             Stage stage = (Stage) usernameField.getScene().getWindow();
 
             //Switch scene
-            stage.setScene(new Scene(root, 400, 300)); // 👈 add size
+            stage.setScene(new Scene(root, 400, 300)); 
             stage.setTitle("Photos");
             stage.show();
 
