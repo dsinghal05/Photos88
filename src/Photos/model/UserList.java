@@ -13,7 +13,7 @@ public class UserList implements Serializable {
     /**
      * Adds User to users array given their username & saves it to userslist.dat
      * @param username of new User
-     * @throws IOException in case of invalid or already used username.
+     * @throws IOException
      */
     public void addUser(String username) throws IOException {
         if (username == null || username.isEmpty()) {
@@ -45,7 +45,7 @@ public class UserList implements Serializable {
     /**
      * Removes specified user and updates userslist.dat
      * @param u User you seek to remove
-     * @throws IOException In case you try to remove admin
+     * @throws IOException 
      */
     public void removeUser(User u) throws IOException {
         if (u.getUsername().equals("admin")) {
