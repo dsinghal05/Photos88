@@ -48,11 +48,11 @@ public class AdminController {
 
                     if (empty || user == null) {
                         setText(null);
-                        setContextMenu(null); // ❌ remove menu for empty cells
+                        setContextMenu(null); // remove menu for empty cells
                     } else {
                         setText(user.getUsername());
 
-                        // ✅ Create context menu ONLY for valid users
+                        // Create context menu ONLY for valid users
                         MenuItem deleteItem = new MenuItem("Delete User");
                         deleteItem.setOnAction(e -> {
                             try {
@@ -68,7 +68,7 @@ public class AdminController {
                         });
 
                         ContextMenu menu = new ContextMenu(deleteItem);
-                        setContextMenu(menu); // ✅ attach only here
+                        setContextMenu(menu); // attach only here
                     }
                 }
             };
