@@ -17,6 +17,13 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.Calendar;
 
+/**
+ * Controller for the album view. Displays photo thumbnails in a grid,
+ * supports adding/removing photos, editing captions and tags,
+ * and opening the full photo display view.
+ * 
+ * @author Divya Raizada
+ */
 public class AlbumController {
     @FXML private Label albumTitleLabel;
     @FXML private Label albumInfoLabel;
@@ -201,9 +208,29 @@ public class AlbumController {
         }
     }
 
-    // 🔍 Open full photo view (next step) TODO
+    // 🔍 Open full photo view with slideshow
     private void openPhoto(Photo p) {
-        showError("Full photo view not implemented yet");
+        try {
+            int index = currentAlbum.getPhotos().indexOf(p);
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Photos/view/photoView.fxml"));
+            Parent root = loader.load();
+
+            PhotoViewController controller = loader.getController();
+            controller.setData(currentAlbum, index);
+
+            Stage stage = new Stage();
+            stage.setTitle("Photo Viewer");
+            stage.setScene(new Scene(root, 800, 600));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            // Refresh in case caption/tags were changed elsewhere
+            refresh();
+
+        } catch (Exception e) {
+            showError("Could not open photo viewer.");
+        }
     }
 
     // 💾 Save

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Photos.view.PhotoViewController"
+            prefWidth="800" prefHeight="600">
+
+    <!-- Top: Caption and Date -->
+    <top>
+        <VBox spacing="4" style="-fx-padding: 10;">
+            <Label fx:id="captionLabel" style="-fx-font-size: 16px; -fx-font-weight: bold;" />
+            <Label fx:id="dateLabel" style="-fx-font-size: 12px;" />
+        </VBox>
+    </top>
+
+    <!-- Center: The photo -->
+    <center>
+        <StackPane style="-fx-padding: 10;">
+            <ImageView fx:id="photoImageView"
+                       preserveRatio="true"
+                       fitWidth="700"
+                       fitHeight="400" />
+        </StackPane>
+    </center>
+
+    <!-- Bottom: Tags + Navigation -->
+    <bottom>
+        <VBox spacing="8" style="-fx-padding: 10;">
+
+            <!-- Tags display -->
+            <Label text="Tags:" style="-fx-font-weight: bold;" />
+            <ListView fx:id="tagListView" prefHeight="80" />
+
+            <!-- Navigation buttons -->
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="← Previous" onAction="#handlePrevious" />
+                <Label fx:id="indexLabel" />
+                <Button text="Next →" onAction="#handleNext" />
+                <Pane HBox.hgrow="ALWAYS"/>
+                <Button text="Back to Album" onAction="#handleBack" />
+            </HBox>
+
+        </VBox>
+    </bottom>
+
+</BorderPane>
