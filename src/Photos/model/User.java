@@ -3,7 +3,7 @@ package Photos.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-
+/** Non admin user can: Create, delete, rename, open albums.  */
 public class User implements Serializable, Comparable<User>{
     String username;
     private ArrayList<Album> albums;
@@ -13,6 +13,18 @@ public class User implements Serializable, Comparable<User>{
     }
     public User(String username) {
         this.username = username;
+        this.albums = new ArrayList<Album>();
+    }
+    public void createAlbum(String title) {
+        for (Album a : albums) {
+            if (a.getTitle().equals(title)) {
+                throw new IllegalArgumentException("Album already exists.");
+            }
+        }
+        albums.add(new Album(title));
+    }
+    public void deleteAlbum(Album a) {
+        albums.remove(a);
     }
     public ArrayList<Album> getAlbums() {
         return albums;
