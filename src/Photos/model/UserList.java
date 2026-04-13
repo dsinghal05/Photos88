@@ -16,7 +16,7 @@ public class UserList implements Serializable {
     private ArrayList<User> users = new ArrayList<>();
     
     /**
-     * Adds User to users array given their username & saves it to userslist.dat
+     * Adds User to users array given their username and saves it to userslist.dat
      * @param username of new User
      * @throws IOException
      */
