@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Photos.view.TagEditorController"
+            prefWidth="420" prefHeight="480">
+
+    <top>
+        <VBox spacing="4" style="-fx-padding: 10 10 6 10;">
+            <Label fx:id="photoLabel" style="-fx-font-size: 13px; -fx-font-weight: bold;" />
+        </VBox>
+    </top>
+
+    <center>
+        <VBox spacing="12" style="-fx-padding: 0 10 10 10;">
+
+            <!-- Current Tags -->
+            <Label text="Current Tags" style="-fx-font-weight: bold;" />
+            <ListView fx:id="tagListView" prefHeight="140" />
+            <Button text="Remove Selected Tag" onAction="#handleRemoveTag" maxWidth="Infinity"/>
+
+            <Separator />
+
+            <!-- Add Tag -->
+            <Label text="Add Tag" style="-fx-font-weight: bold;" />
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <Label text="Type:" minWidth="45"/>
+                <ComboBox fx:id="tagTypeCombo" promptText="Select type" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            </HBox>
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <Label text="Value:" minWidth="45"/>
+                <TextField fx:id="tagValueField" promptText="Enter value" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            </HBox>
+            <Button text="Add Tag" onAction="#handleAddTag" maxWidth="Infinity"/>
+
+            <Separator />
+
+            <!-- Define New Tag Type -->
+            <Label text="Define New Tag Type" style="-fx-font-weight: bold;" />
+            <HBox spacing="8" alignment="CENTER_LEFT">
+                <Label text="Name:" minWidth="45"/>
+                <TextField fx:id="newTagTypeField" promptText="e.g. mood" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            </HBox>
+            <CheckBox fx:id="singleValueCheck" text="Single-value (only one tag of this type per photo)" />
+            <Button text="Create Tag Type" onAction="#handleCreateTagType" maxWidth="Infinity"/>
+
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 8 10 10 10;">
+            <Button text="Done" onAction="#handleDone" />
+        </HBox>
+    </bottom>
+
+</BorderPane>

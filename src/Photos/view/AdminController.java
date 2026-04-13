@@ -59,11 +59,7 @@ public class AdminController {
                                 userList.removeUser(user);
                                 refreshList();
                             } catch (IOException | IllegalArgumentException ex) {
-                                Alert alert = new Alert(AlertType.ERROR);
-                                alert.setTitle("Admin Error");
-                                alert.setHeaderText("Failed to remove User");
-                                alert.setContentText(ex.getLocalizedMessage());
-                                alert.showAndWait();
+                                showError(ex.getLocalizedMessage());
                             }
                         });
 
@@ -94,13 +90,7 @@ public class AdminController {
             userList.addUser(username);
         }
         catch (IllegalArgumentException e) {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Admin Error");
-            alert.setHeaderText("Could not add User");
-            alert.setContentText(e.getLocalizedMessage());
-
-            alert.showAndWait();
-            return;
+            showError(e.getLocalizedMessage());
         }
         usernameField.clear();
         refreshList();
@@ -125,8 +115,16 @@ public class AdminController {
             stage.show();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            showError(e.getLocalizedMessage());
         }
         return;
+    }
+
+    private void showError(String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Admin");
+        alert.setHeaderText("Error");
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 }

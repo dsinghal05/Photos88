@@ -8,6 +8,7 @@ import java.util.ArrayList;
  * It handles adding and removing users and saves the data to "userslist.dat"
  */
 public class UserList implements Serializable {
+    private static final long serialVersionUID = 1L;
     private ArrayList<User> users = new ArrayList<>();
     
     /**

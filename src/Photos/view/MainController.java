@@ -1,29 +1,270 @@
 package Photos.view;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+import Photos.model.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import Photos.model.User;
-import Photos.model.UserList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
-/**Represents non-admin subsytem. Opens with displaying all the User's albums. */
 public class MainController {
+
+    @FXML private Label userLabel;
+    @FXML private ListView<Album> albumListView;
+    @FXML private ListView<Photo> searchResultsListView;
+    @FXML private VBox searchResultsBox;
+    @FXML private TextField newAlbumNameField;
+
+    private User currentUser;
     private UserList userList;
-    @FXML private Label usernameLabel;
 
-    public void setUserList(UserList list) {
+    // 🔑 Called from LoginController
+    public void setUser(User user, UserList list) {
+        this.currentUser = user;
         this.userList = list;
+
+        userLabel.setText("Logged in as: " + user.getUsername());
+        refreshList();
     }
 
-    public void setUser(User user) {
-        usernameLabel.setText("Logged in as: " + user.getUsername());
+    @FXML
+    public void initialize() {
+
+        // Display album titles
+        albumListView.setCellFactory(lv -> {
+            ListCell<Album> cell = new ListCell<>() {
+                @Override
+                protected void updateItem(Album album, boolean empty) {
+                    super.updateItem(album, empty);
+
+                    if (empty || album == null) {
+                        setText(null);
+                        setContextMenu(null);
+                    } else {
+                        setText(album.getTitle());
+
+                        // Right-click menu
+                        MenuItem renameItem = new MenuItem("Rename");
+                        renameItem.setOnAction(e -> handleRenameAlbum(album));
+
+                        MenuItem deleteItem = new MenuItem("Delete");
+                        deleteItem.setOnAction(e -> handleDeleteAlbum(album));
+
+                        ContextMenu menu = new ContextMenu(renameItem, deleteItem);
+                        setContextMenu(menu);
+                    }
+                }
+            };
+            return cell;
+        });
+
+        // Double click to open album
+        albumListView.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2) {
+                Album selected = albumListView.getSelectionModel().getSelectedItem();
+                if (selected != null) {
+                    openAlbum(selected);
+                }
+            }
+        });
     }
 
-    //helper program to call after modifying any data (albums, photos, tags, captions, etc.)
+    // 🔄 Refresh album list
+    private void refreshList() {
+        if (currentUser != null) {
+            albumListView.getItems().setAll(currentUser.getAlbums());
+        }
+    }
+
+    @FXML
+    public void handleSearchByDate(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("dateSearch.fxml"));
+            Parent root = loader.load();
+
+            DateSearchController controller = loader.getController();
+            controller.setData(this, currentUser);
+
+            Stage stage = new Stage();
+            stage.setTitle("Search by Date");
+            stage.setScene(new Scene(root, 300, 200));
+            stage.initModality(Modality.APPLICATION_MODAL); // blocks main window
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            showError(e.getLocalizedMessage());
+        }
+    }
+    public void handleSearchByTags(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("tagSearch.fxml"));
+            Parent root = loader.load();
+
+            TagSearchController controller = loader.getController();
+            controller.setData(this, currentUser);
+
+            Stage stage = new Stage();
+            stage.setTitle("Search by Tags");
+            stage.setScene(new Scene(root, 400, 300));
+            stage.initModality(Modality.APPLICATION_MODAL); // blocks main window
+            stage.showAndWait();
+
+        } catch (IOException e) {
+            showError(e.getMessage());
+        }
+    }
+    public void showSearchResults(ArrayList<Photo> results) {
+
+        searchResultsListView.getItems().clear();
+        searchResultsListView.getItems().addAll(results);
+
+        searchResultsBox.setVisible(true);
+        searchResultsBox.setManaged(true);
+    }
+    public void handleCreateAlbumFromSearch() {
+        String newAlbumName = newAlbumNameField.getText();
+        ArrayList<Photo> results = new ArrayList<>(searchResultsListView.getItems());
+        if (results.isEmpty()) {
+            showError("Album will be empty, no search results to add.");
+        }
+
+        try {
+            currentUser.createAlbum(newAlbumName);
+        }
+        catch (IllegalArgumentException e) {
+            showError(e.getLocalizedMessage());
+        }
+
+        //populate new album
+        Album newAlbum = null;
+        for (Album a : currentUser.getAlbums()) {
+            if (a.getTitle().equals(newAlbumName)) {
+                newAlbum = a;
+                break;
+            }
+        }
+        for (Photo p : results) {
+            newAlbum.addPhoto(p);
+        }
+
+        save();
+        refreshList();
+        newAlbumNameField.clear();
+ 
+        // Hide results panel
+        searchResultsBox.setVisible(false);
+        searchResultsBox.setManaged(false);
+    }
+    // ➕ Add album
+    @FXML
+    public void handleAddAlbum() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("New Album");
+        dialog.setHeaderText("Create Album");
+        dialog.setContentText("Enter album name:");
+
+        dialog.showAndWait().ifPresent(name -> {
+            try {
+                currentUser.createAlbum(name);
+                save();
+                refreshList();
+            } catch (IllegalArgumentException e) {
+                showError(e.getMessage());
+            }
+        });
+    }
+
+    // ✏️ Rename album
+    private void handleRenameAlbum(Album album) {
+        TextInputDialog dialog = new TextInputDialog(album.getTitle());
+        dialog.setTitle("Rename Album");
+        dialog.setHeaderText("Rename Album");
+        dialog.setContentText("New name:");
+
+        dialog.showAndWait().ifPresent(name -> {
+            album.setTitle(name);
+            save();
+            refreshList();
+        });
+    }
+
+    // ❌ Delete album
+    private void handleDeleteAlbum(Album album) {
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Album");
+        confirm.setHeaderText("Are you sure?");
+        confirm.setContentText("Delete album: " + album.getTitle());
+
+        confirm.showAndWait().ifPresent(result -> {
+            if (result == ButtonType.OK) {
+                currentUser.getAlbums().remove(album);
+                save();
+                refreshList();
+            }
+        });
+    }
+
+    // 📂 Open album (next screen)
+    private void openAlbum(Album album) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Photos/view/album.fxml"));
+            Parent root = loader.load();
+
+            AlbumController controller = loader.getController();
+            controller.setData(currentUser, userList, album);
+
+            Stage stage = (Stage) albumListView.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Album: " + album.getTitle());
+            stage.sizeToScene();
+
+        } catch (Exception e) {
+            showError(e.getLocalizedMessage());
+        }
+    }
+
+    // 🔙 Logout
+    @FXML
+    public void handleLogout() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Photos/view/login.fxml"));
+            Parent root = loader.load();
+
+            LoginController controller = loader.getController();
+            controller.setUserList(userList);
+
+            Stage stage = (Stage) albumListView.getScene().getWindow();
+            stage.setScene(new Scene(root, 400, 300));
+            stage.setTitle("Photos");
+
+        } catch (Exception e) {
+            showError(e.getLocalizedMessage());
+        }
+    }
+
+    // 💾 Save system
     private void save() {
         try {
             UserList.write(userList);
         } catch (Exception e) {
-            e.printStackTrace();
+            showError("Save failed.");
         }
     }
+
+    // ⚠️ Error helper
+    private void showError(String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setHeaderText("Error");
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
+
+
 }

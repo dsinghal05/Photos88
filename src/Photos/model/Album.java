@@ -2,25 +2,31 @@ package Photos.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 public class Album implements Serializable{
+    private static final long serialVersionUID = 1L;
     private ArrayList<Photo> photos;
     private String title;
     
 
     public Album(String title) {
         this.title = title;
+        this.photos = new ArrayList<Photo>();
     }
+    /**
+     * Adds photo to album, checks to make sure Photo isn't already in album. 
+     * @param p Given photo
+     */
     public void addPhoto(Photo p) {
+        for (Photo photo : photos) {
+            if (photo.getFilePath().equals(p.getFilePath())) {
+                throw new IllegalArgumentException("Photo already exists in album");
+            }
+        }
         photos.add(p);
     }
     public void removePhoto(Photo p) {
         photos.remove(p);
-    }
-    public void sortBy(Comparator<Photo> c) {
-        photos.sort(c);
-        //Choose & refresh view in Controller
     }
     public ArrayList<Photo> getPhotos() {
         return photos;
@@ -31,5 +37,4 @@ public class Album implements Serializable{
     public void setTitle(String title) {
         this.title = title;
     }
-    //
 }   

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" alignment="CENTER" style="-fx-padding: 15;"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Photos.view.DateSearchController">
+
+    <Label text="Search Photos by Date Range" />
+
+    <HBox spacing="10">
+        <Label text="Start Date:" />
+        <DatePicker fx:id="startDatePicker"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="End Date:" />
+        <DatePicker fx:id="endDatePicker"/>
+    </HBox>
+
+    <Button text="Search" onAction="#handleSearch"/>
+
+</VBox>

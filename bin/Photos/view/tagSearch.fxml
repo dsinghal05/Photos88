@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="12" alignment="TOP_CENTER" style="-fx-padding: 16;"
+      prefWidth="380"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="Photos.view.TagSearchController">
+
+    <Label text="Search Photos by Tag" style="-fx-font-size: 14px; -fx-font-weight: bold;" />
+
+    <!-- ── First tag row ── -->
+    <HBox spacing="8" alignment="CENTER_LEFT">
+        <Label text="Tag 1:" minWidth="40"/>
+        <ComboBox fx:id="typeCombo1" promptText="type" prefWidth="120"/>
+        <Label text="="/>
+        <TextField fx:id="valueField1" promptText="value" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+    </HBox>
+
+    <!-- ── AND / OR toggle (hidden until "two tags" chosen) ── -->
+    <HBox fx:id="operatorRow" spacing="12" alignment="CENTER"
+          visible="false" managed="false">
+        <RadioButton fx:id="andRadio"  text="AND" />
+        <RadioButton fx:id="orRadio"   text="OR"  />
+    </HBox>
+
+    <!-- ── Second tag row (hidden until "two tags" chosen) ── -->
+    <HBox fx:id="tag2Row" spacing="8" alignment="CENTER_LEFT"
+          visible="false" managed="false">
+        <Label text="Tag 2:" minWidth="40"/>
+        <ComboBox fx:id="typeCombo2" promptText="type" prefWidth="120"/>
+        <Label text="="/>
+        <TextField fx:id="valueField2" promptText="value" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+    </HBox>
+
+    <Separator/>
+
+    <!-- ── Mode selector ── -->
+    <HBox spacing="10" alignment="CENTER">
+        <RadioButton fx:id="oneTagRadio"  text="One tag"  onAction="#handleModeChange"/>
+        <RadioButton fx:id="twoTagsRadio" text="Two tags" onAction="#handleModeChange"/>
+    </HBox>
+
+    <Button text="Search" onAction="#handleSearch" maxWidth="Infinity"/>
+
+</VBox>

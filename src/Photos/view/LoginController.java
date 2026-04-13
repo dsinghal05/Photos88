@@ -58,7 +58,7 @@ public class LoginController {
                 stage.show();
 
             } catch (Exception e) {
-                e.printStackTrace();
+                showError(e.getLocalizedMessage());
             }
             return;
         }
@@ -78,7 +78,7 @@ public class LoginController {
 
                 // 🔑 pass the user
                 MainController controller = loader.getController();
-                controller.setUser(findUser);
+                controller.setUser(findUser, userList);
 
                 Stage stage = (Stage) usernameField.getScene().getWindow();
                 stage.setScene(new Scene(root));
@@ -87,20 +87,20 @@ public class LoginController {
                 stage.show();
 
             } catch (Exception e) {
-                e.printStackTrace();
+                showError(e.getLocalizedMessage());
             }
         }
 
         else {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle("Login Error");
-            alert.setHeaderText("Invalid Username");
-            alert.setContentText("User does not exist. Please try again.");
-
-            alert.showAndWait();
-            usernameField.clear();
-            return;
+            showError("Username does not exist.");
         }
         
+    }
+    private void showError(String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Login");
+        alert.setHeaderText("Error");
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 }
