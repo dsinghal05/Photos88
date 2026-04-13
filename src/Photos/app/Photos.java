@@ -16,7 +16,7 @@ import javafx.stage.Stage;
  * @author Divit Singhal
  * @author Divya Raizada
  */
-public class PhotosApp extends Application {
+public class Photos extends Application {
 
     @Override
     public void start(Stage primaryStage) {
