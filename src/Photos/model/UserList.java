@@ -89,10 +89,45 @@ public class UserList implements Serializable {
             return list;
 
         } catch (Exception e) {
-            // First run: create list WITH admin
+            // First run: create list WITH admin and stock user
             UserList list = new UserList();
             list.users.add(new User("admin"));
+            initializeStockUser(list);
             return list;
         }
+    }
+
+    /**
+     * Creates the "stock" user with a "stock" album containing
+     * all photos found in the data directory.
+     * @param list the UserList to add the stock user to
+     */
+    private static void initializeStockUser(UserList list) {
+        User stockUser = new User("stock");
+        stockUser.createAlbum("stock");
+        Album stockAlbum = stockUser.getAlbums().get(0);
+
+        File dataDir = new File("data");
+        if (dataDir.exists() && dataDir.isDirectory()) {
+            File[] files = dataDir.listFiles((dir, name) -> {
+                String lower = name.toLowerCase();
+                return lower.endsWith(".jpg") || lower.endsWith(".jpeg")
+                    || lower.endsWith(".png") || lower.endsWith(".bmp")
+                    || lower.endsWith(".gif");
+            });
+
+            if (files != null) {
+                for (File f : files) {
+                    Photo p = stockUser.getOrCreatePhoto(f.getAbsolutePath());
+                    try {
+                        stockAlbum.addPhoto(p);
+                    } catch (IllegalArgumentException ex) {
+                        // skip duplicates
+                    }
+                }
+            }
+        }
+
+        list.users.add(stockUser);
     }
 }
