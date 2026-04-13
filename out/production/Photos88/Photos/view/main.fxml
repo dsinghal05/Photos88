@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="Photos.view.MainController"
+            prefWidth="700" prefHeight="500">
+
+    <!-- 🔝 Top Bar -->
+    <top>
+        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10;">
+
+            <!-- Logged in user -->
+            <Label fx:id="userLabel" style="-fx-font-size: 14px;" />
+
+            <Pane HBox.hgrow="ALWAYS"/>
+
+            <!-- Add album -->
+            <Button text="Add Album" onAction="#handleAddAlbum"/>
+
+            <!-- Logout -->
+            <Button text="Logout" onAction="#handleLogout"/>
+
+        </HBox>
+    </top>
+
+    <!-- 📂 Album List -->
+    <center>
+        <ListView fx:id="albumListView"/>
+    </center>
+
+    <!-- 🔍 Bottom Search Bar -->
+   
+    <bottom>
+        <VBox spacing="8" style="-fx-padding: 10;">
+
+            <!-- Search buttons -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+
+                <Button text="Search by Date" onAction="#handleSearchByDate"/>
+                <Button text="Search by Tags" onAction="#handleSearchByTags"/>
+
+                <Pane HBox.hgrow="ALWAYS"/>
+
+                <!-- Placeholder for future "search results status" -->
+                <Label fx:id="searchStatusLabel" text="" />
+            </HBox>
+
+            <!-- 🔽 Search results + create album section (hidden until used) -->
+            <VBox spacing="8" fx:id="searchResultsBox" visible="false" managed="false">
+
+                <Label text="Search Results"/>
+
+                <!-- You will populate this ListView with Photos[] results -->
+                <ListView fx:id="searchResultsListView" prefHeight="120"/>
+
+                <HBox spacing="10">
+
+                    <Label text="Create album from results:"/>
+
+                    <TextField fx:id="newAlbumNameField" promptText="Album name"/>
+
+                    <Button text="Create Album" onAction="#handleCreateAlbumFromSearch"/>
+                </HBox>
+
+            </VBox>
+
+        </VBox>
+    </bottom>
+
+</BorderPane>
