@@ -44,4 +44,12 @@ public class Album implements Serializable{
     public void setTitle(String title) {
         this.title = title;
     }
+
+    /**
+     * @return the album title (used for display in dialogs and lists)
+     */
+    @Override
+    public String toString() {
+        return title;
+    }
 }   

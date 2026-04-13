@@ -18,21 +18,21 @@
 
     <!-- Center: The photo -->
     <center>
-        <StackPane style="-fx-padding: 10;">
+        <StackPane style="-fx-padding: 5;">
             <ImageView fx:id="photoImageView"
                        preserveRatio="true"
-                       fitWidth="700"
-                       fitHeight="400" />
+                       fitWidth="500"
+                       fitHeight="300" />
         </StackPane>
     </center>
 
     <!-- Bottom: Tags + Navigation -->
     <bottom>
-        <VBox spacing="8" style="-fx-padding: 10;">
+        <VBox spacing="6" style="-fx-padding: 10;">
 
             <!-- Tags display -->
             <Label text="Tags:" style="-fx-font-weight: bold;" />
-            <ListView fx:id="tagListView" prefHeight="80" />
+            <ListView fx:id="tagListView" prefHeight="60" maxHeight="60" />
 
             <!-- Navigation buttons -->
             <HBox spacing="10" alignment="CENTER">
