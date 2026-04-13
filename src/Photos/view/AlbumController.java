@@ -129,10 +129,35 @@ public class AlbumController {
         MenuItem tags = new MenuItem("Edit Tags");
         tags.setOnAction(e -> openTagEditor(p));
 
-        // TODO (placeholders for required features)
-        MenuItem move = new MenuItem("Move/Copy");
+        MenuItem copy = new MenuItem("Copy to Album");
+        copy.setOnAction(e -> {
+            Album target = chooseAlbum("Copy Photo", "Select album to copy to:");
+            if (target != null) {
+                try {
+                    target.addPhoto(p);
+                    save();
+                } catch (IllegalArgumentException ex) {
+                    showError(ex.getMessage());
+                }
+            }
+        });
 
-        menu.getItems().addAll(delete, captionItem, tags, move);
+        MenuItem move = new MenuItem("Move to Album");
+        move.setOnAction(e -> {
+            Album target = chooseAlbum("Move Photo", "Select album to move to:");
+            if (target != null) {
+                try {
+                    target.addPhoto(p);
+                    currentAlbum.removePhoto(p);
+                    save();
+                    refresh();
+                } catch (IllegalArgumentException ex) {
+                    showError(ex.getMessage());
+                }
+            }
+        });
+
+        menu.getItems().addAll(delete, captionItem, tags, copy, move);
         box.setOnContextMenuRequested(e -> menu.show(box, e.getScreenX(), e.getScreenY()));
 
         return box;
@@ -231,6 +256,37 @@ public class AlbumController {
         } catch (Exception e) {
             showError("Could not open photo viewer.");
         }
+    }
+
+    /**
+     * Shows a dialog letting the user pick one of their other albums.
+     * @param title the dialog title
+     * @param header the dialog header text
+     * @return the selected Album, or null if cancelled
+     */
+    private Album chooseAlbum(String title, String header) {
+        // Build list of albums excluding the current one
+        java.util.List<Album> otherAlbums = new java.util.ArrayList<>();
+        for (Album a : currentUser.getAlbums()) {
+            if (!a.getTitle().equals(currentAlbum.getTitle())) {
+                otherAlbums.add(a);
+            }
+        }
+
+        if (otherAlbums.isEmpty()) {
+            showError("No other albums to choose from. Create another album first.");
+            return null;
+        }
+
+        ChoiceDialog<Album> dialog = new ChoiceDialog<>(otherAlbums.get(0), otherAlbums);
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+
+        // Display album titles in the dropdown
+        dialog.setContentText("Album:");
+
+        java.util.Optional<Album> result = dialog.showAndWait();
+        return result.orElse(null);
     }
 
     // 💾 Save
