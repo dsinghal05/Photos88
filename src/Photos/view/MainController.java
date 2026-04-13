@@ -48,7 +48,23 @@ public class MainController {
                         setText(null);
                         setContextMenu(null);
                     } else {
-                        setText(album.getTitle());
+                        // Show album title, photo count, and date range
+                        int count = album.getPhotos().size();
+                        String display = album.getTitle() + "  |  " + count + " photo" + (count != 1 ? "s" : "");
+
+                        if (count > 0) {
+                            java.util.Calendar earliest = null;
+                            java.util.Calendar latest = null;
+                            for (Photo p : album.getPhotos()) {
+                                java.util.Calendar d = p.getDateModified();
+                                if (earliest == null || d.before(earliest)) earliest = d;
+                                if (latest == null || d.after(latest)) latest = d;
+                            }
+                            java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("MM/dd/yyyy");
+                            display += "  |  " + sdf.format(earliest.getTime()) + " - " + sdf.format(latest.getTime());
+                        }
+
+                        setText(display);
 
                         // Right-click menu
                         MenuItem renameItem = new MenuItem("Rename");

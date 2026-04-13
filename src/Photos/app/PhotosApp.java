@@ -8,6 +8,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Main entry point for the Photos application.
+ * Loads the user list from disk, displays the login screen,
+ * and ensures all data is saved when the window is closed.
+ * 
+ * @author Divya Raizada
+ */
 public class PhotosApp extends Application {
 
     @Override
@@ -23,6 +30,15 @@ public class PhotosApp extends Application {
             // Pass user list to controller
             LoginController controller = loader.getController();
             controller.setUserList(userList);
+
+            // Safe quit: save all data when the window is closed
+            primaryStage.setOnCloseRequest(event -> {
+                try {
+                    UserList.write(userList);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
 
             primaryStage.setTitle("Photos");
             primaryStage.setScene(scene);
