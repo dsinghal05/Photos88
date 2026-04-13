@@ -14,6 +14,14 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the main user view. Displays all albums belonging to the user
+ * with photo count and date range. Supports creating, deleting, renaming, and
+ * opening albums, as well as searching photos by date or tags.
+ * 
+ * @author Divit Singhal
+ * @author Divya Raizada
+ */
 public class MainController {
 
     @FXML private Label userLabel;

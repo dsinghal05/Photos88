@@ -11,6 +11,13 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Controller for the tag search dialog. Supports searching by a single
+ * tag-value pair, or conjunctive/disjunctive combinations of two tag-value pairs.
+ * 
+ * @author Divit Singhal
+ * @author Divya Raizada
+ */
 public class TagSearchController {
     // ── Tag row 1 ──
     @FXML private ComboBox<String> typeCombo1;

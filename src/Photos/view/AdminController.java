@@ -19,7 +19,11 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 /**
- * Admin is a special sub-system that can list, add, and remove users. It does not support photo functionality. Admin can not be deleted from the user list.
+ * Admin is a special sub-system that can list, add, and remove users.
+ * It does not support photo functionality. Admin can not be deleted from the user list.
+ * 
+ * @author Divit Singhal
+ * @author Divya Raizada
  */
 public class AdminController {
     @FXML private TextField usernameField;

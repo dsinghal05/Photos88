@@ -22,6 +22,7 @@ import java.util.Calendar;
  * supports adding/removing photos, editing captions and tags,
  * and opening the full photo display view.
  * 
+ * @author Divit Singhal
  * @author Divya Raizada
  */
 public class AlbumController {

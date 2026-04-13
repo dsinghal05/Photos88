@@ -2,6 +2,13 @@ package Photos.model;
 
 import java.io.Serializable;
 
+/**
+ * Represents a tag as a name-value pair, e.g. ("person", "Alice") or ("location", "New Brunswick").
+ * Two tags are considered equal if they have the same name and value.
+ * 
+ * @author Divit Singhal
+ * @author Divya Raizada
+ */
 public class Tag implements Serializable {
     private static final long serialVersionUID = 1L;
     private String name;

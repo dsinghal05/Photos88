@@ -7,6 +7,13 @@ import java.util.Calendar;
 
 import javafx.scene.image.Image;
 
+/**
+ * Represents a photo in the application. Stores the file path, caption,
+ * date of last modification (used as date taken), and a list of tags.
+ * 
+ * @author Divit Singhal
+ * @author Divya Raizada
+ */
 public class Photo implements Serializable{
     private static final long serialVersionUID = 1L;
     private ArrayList<Tag> tags;

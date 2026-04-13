@@ -5,7 +5,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-/** Non admin user can: Create, delete, rename, open albums.  */
+/**
+ * Represents a non-admin user. Stores albums, photos, and tag types.
+ * Supports creating, deleting, and renaming albums, as well as
+ * searching photos by date range or tag-value pairs.
+ * 
+ * @author Divit Singhal
+ * @author Divya Raizada
+ */
 public class User implements Serializable, Comparable<User>{
     private static final long serialVersionUID = 1L;
     String username;

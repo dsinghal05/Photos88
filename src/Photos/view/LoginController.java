@@ -11,9 +11,14 @@ import Photos.model.UserList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 
-/**This is the first window of the app. Entering "admin" will take you to a special admin view. 
-Entering a different valid username will take you to the non-admin subsystem.
-Will display error windows when you enter an empty or invalid username. */
+/**
+ * Controller for the login screen. Entering "admin" navigates to the admin panel.
+ * Entering a valid username navigates to the non-admin user subsystem.
+ * Displays error dialogs for empty or invalid usernames.
+ * 
+ * @author Divit Singhal
+ * @author Divya Raizada
+ */
 public class LoginController {
     @FXML TextField usernameField;
     

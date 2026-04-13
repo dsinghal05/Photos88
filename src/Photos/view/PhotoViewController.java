@@ -19,6 +19,7 @@ import java.util.ArrayList;
  * Shows the selected photo full-size along with its caption, date, and tags.
  * Supports forward/backward navigation through the album (manual slideshow).
  * 
+ * @author Divit Singhal
  * @author Divya Raizada
  */
 public class PhotoViewController {

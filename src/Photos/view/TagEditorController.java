@@ -10,6 +10,13 @@ import javafx.stage.Stage;
 
 import java.util.Map;
 
+/**
+ * Controller for the tag editor window. Allows users to add and remove tags
+ * on a photo, and define new custom tag types.
+ * 
+ * @author Divit Singhal
+ * @author Divya Raizada
+ */
 public class TagEditorController {
 
     @FXML private Label photoLabel;

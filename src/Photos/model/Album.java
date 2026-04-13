@@ -3,6 +3,13 @@ package Photos.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Represents a photo album containing a list of photos.
+ * Supports adding, removing, and retrieving photos.
+ * 
+ * @author Divit Singhal
+ * @author Divya Raizada
+ */
 public class Album implements Serializable{
     private static final long serialVersionUID = 1L;
     private ArrayList<Photo> photos;

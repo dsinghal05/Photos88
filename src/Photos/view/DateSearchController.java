@@ -12,6 +12,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Controller for the date range search dialog.
+ * Allows users to search for photos between a start and end date.
+ * 
+ * @author Divit Singhal
+ * @author Divya Raizada
+ */
 public class DateSearchController {
 
     @FXML private DatePicker startDatePicker;

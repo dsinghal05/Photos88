@@ -5,7 +5,11 @@ import java.util.ArrayList;
 
 /**
  * UserList is the Serializable object that holds the users ArrayList.
- * It handles adding and removing users and saves the data to "userslist.dat"
+ * It handles adding and removing users and saves the data to "userslist.dat".
+ * Also initializes the stock user with pre-loaded photos on first run.
+ * 
+ * @author Divit Singhal
+ * @author Divya Raizada
  */
 public class UserList implements Serializable {
     private static final long serialVersionUID = 1L;

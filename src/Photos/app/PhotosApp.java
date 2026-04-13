@@ -13,6 +13,7 @@ import javafx.stage.Stage;
  * Loads the user list from disk, displays the login screen,
  * and ensures all data is saved when the window is closed.
  * 
+ * @author Divit Singhal
  * @author Divya Raizada
  */
 public class PhotosApp extends Application {
